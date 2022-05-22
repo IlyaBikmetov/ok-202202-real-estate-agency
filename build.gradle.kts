@@ -1,14 +1,15 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "1.6.20-RC"
 }
 
-group = "ru.ibikmetov"
-version = "1.0-SNAPSHOT"
+group = "ru.ibikmetov.kotlin.realestateagency"
+version = "1.0"
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
 dependencies {
@@ -17,8 +18,4 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }
