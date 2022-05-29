@@ -23,6 +23,7 @@ package ru.ibikmetov.kotlin.realestateagency.api.v1.models
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.AdVisibility
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.BaseAdUpdatable
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.DealSide
+import ru.ibikmetov.kotlin.realestateagency.api.v1.models.RealtyProperty
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.RentType
 
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param address Адрес
  * @param dealside 
  * @param renttype 
+ * @param realtyproperty 
  * @param visibility 
  */
 
@@ -57,6 +59,9 @@ data class AdCreateObject (
 
     @field:JsonProperty("renttype")
     val renttype: RentType? = null,
+
+    @field:JsonProperty("realtyproperty")
+    val realtyproperty: RealtyProperty? = null,
 
     @field:JsonProperty("visibility")
     val visibility: AdVisibility? = null

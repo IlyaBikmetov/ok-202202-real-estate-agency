@@ -202,6 +202,18 @@ components:
         - long
         - daily
 
+    RealtyProperty:
+      type: string
+      description: 'Тип недвижимости: квартира, комната, отель...'
+      enum:
+        - flat
+        - room
+        - hotel
+        - hostel
+        - house
+        - office
+        - storage
+
     BaseAdUpdatable:
       type: object
       description: Объект описывает свойства, одинаковые для create и update
@@ -219,6 +231,8 @@ components:
           $ref: '#/components/schemas/DealSide'
         renttype:
           $ref: '#/components/schemas/RentType'
+        realtyproperty:
+          $ref: '#/components/schemas/RealtyProperty'
         visibility:
           $ref: '#/components/schemas/AdVisibility'
 

@@ -52,5 +52,7 @@
       - Flat (квартира)
       - Room (комната)
       - House (дом)
+      - Hotel (отель)
+      - Hostel (хостел)
       - Office (офис)
       - Storage (склад) 
