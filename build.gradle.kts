@@ -19,3 +19,8 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+subprojects {
+    group = rootProject.group
+    version = rootProject.version
+}
