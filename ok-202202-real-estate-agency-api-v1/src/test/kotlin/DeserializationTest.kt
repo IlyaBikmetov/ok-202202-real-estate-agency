@@ -1,4 +1,3 @@
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.RealType
 import org.junit.Test
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
 import kotlin.test.assertEquals

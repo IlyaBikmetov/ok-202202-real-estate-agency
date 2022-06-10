@@ -19,8 +19,10 @@ class MapperTest {
             ad = AdCreateObject(
                 title = "title",
                 description = "desc",
+                address = "address",
                 dealside = DealSide.DEMAND,
                 renttype = RentType.DAILY,
+                realtyproperty = RealtyProperty.STORAGE,
                 visibility = AdVisibility.PUBLIC,
             ),
         )
@@ -28,12 +30,16 @@ class MapperTest {
         val context = ReAgContext()
         context.fromTransport(req)
 
-        assertEquals(ReAgStubs.SUCCESS, context.stubCase)
+        assertEquals("1234", context.requestId.asString())
         assertEquals(ReAgWorkMode.STUB, context.workMode)
+        assertEquals(ReAgStubs.SUCCESS, context.stubCase)
         assertEquals("title", context.adRequest.title)
-        assertEquals(ReAgVisibility.VISIBLE_PUBLIC, context.adRequest.visibility)
+        assertEquals("desc", context.adRequest.description)
+        assertEquals("address", context.adRequest.address)
         assertEquals(ReAgDealSide.DEMAND, context.adRequest.dealSide)
         assertEquals(ReAgRentType.DAILY, context.adRequest.rentType)
+        assertEquals(ReAgRealtyProperty.STORAGE, context.adRequest.realtyProperty)
+        assertEquals(ReAgVisibility.VISIBLE_PUBLIC, context.adRequest.visibility)
     }
 
     @Test
@@ -44,8 +50,10 @@ class MapperTest {
             adResponse = ReAgAd(
                 title = "title",
                 description = "desc",
-                dealSide = ReAgDealSide.DEMAND,
+                address = "address",
+                dealSide = ReAgDealSide.PROPOSAL,
                 rentType = ReAgRentType.DAILY,
+                realtyProperty = ReAgRealtyProperty.ROOM,
                 visibility = ReAgVisibility.VISIBLE_PUBLIC,
             ),
             errors = mutableListOf(
@@ -64,9 +72,11 @@ class MapperTest {
         assertEquals("1234", req.requestId)
         assertEquals("title", req.ad?.title)
         assertEquals("desc", req.ad?.description)
-        assertEquals(AdVisibility.PUBLIC, req.ad?.visibility)
-        assertEquals(DealSide.DEMAND, req.ad?.dealside)
+        assertEquals("address", req.ad?.address)
+        assertEquals(DealSide.PROPOSAL, req.ad?.dealside)
         assertEquals(RentType.DAILY, req.ad?.renttype)
+        assertEquals(RealtyProperty.ROOM, req.ad?.realtyproperty)
+        assertEquals(AdVisibility.PUBLIC, req.ad?.visibility)
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)
         assertEquals("request", req.errors?.firstOrNull()?.group)
