@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("org.openapi.generator") version "6.0.0"
+    id("org.openapi.generator")
 }
 
 dependencies {

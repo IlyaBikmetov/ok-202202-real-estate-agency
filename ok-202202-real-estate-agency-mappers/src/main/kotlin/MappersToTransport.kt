@@ -59,10 +59,12 @@ private fun ReAgAd.toTransportAd(): AdResponseObject = AdResponseObject(
     id = id.takeIf { it != ReAgAdId.NONE }?.asString(),
     title = title.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },
+    address = address.takeIf { it.isNotBlank() },
     ownerId = ownerId.takeIf { it != ReAgUserId.NONE }?.asString(),
+    dealside = dealSide.toTransportAd(),
+    renttype = rentType.toTransportAd(),
+    realtyproperty = realtyProperty.toTransportAd(),
     visibility = visibility.toTransportAd(),
-    dealside = this.dealSide.toTransportAd(),
-    renttype = this.rentType.toTransportAd(),
     permissions = permissionsClient.toTransportAd(),
 )
 
@@ -89,7 +91,7 @@ private fun ReAgVisibility.toTransportAd(): AdVisibility? = when (this) {
 
 private fun ReAgDealSide.toTransportAd(): DealSide? = when (this) {
     ReAgDealSide.DEMAND -> DealSide.DEMAND
-    ReAgDealSide.SUPPLY -> DealSide.PROPOSAL
+    ReAgDealSide.PROPOSAL -> DealSide.PROPOSAL
     ReAgDealSide.NONE -> null
 }
 
@@ -97,6 +99,17 @@ private fun ReAgRentType.toTransportAd(): RentType? = when (this) {
     ReAgRentType.LONG -> RentType.LONG
     ReAgRentType.DAILY -> RentType.DAILY
     ReAgRentType.NONE -> null
+}
+
+private fun ReAgRealtyProperty.toTransportAd(): RealtyProperty? = when (this) {
+    ReAgRealtyProperty.FLAT -> RealtyProperty.FLAT
+    ReAgRealtyProperty.ROOM -> RealtyProperty.ROOM
+    ReAgRealtyProperty.HOTEL -> RealtyProperty.HOTEL
+    ReAgRealtyProperty.HOSTEL -> RealtyProperty.HOSTEL
+    ReAgRealtyProperty.HOUSE -> RealtyProperty.HOUSE
+    ReAgRealtyProperty.OFFICE -> RealtyProperty.OFFICE
+    ReAgRealtyProperty.STORAGE -> RealtyProperty.STORAGE
+    ReAgRealtyProperty.NONE -> null
 }
 
 private fun List<ReAgError>.toTransportErrors(): List<Error>? = this

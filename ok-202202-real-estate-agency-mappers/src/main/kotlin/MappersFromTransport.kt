@@ -86,9 +86,10 @@ private fun AdCreateObject.toInternal(): ReAgAd = ReAgAd(
     title = this.title ?: "",
     description = this.description ?: "",
     address = this.address ?: "",
-    visibility = this.visibility.fromTransport(),
     dealSide = this.dealside.fromTransport(),
     rentType = this.renttype.fromTransport(),
+    realtyProperty = this.realtyproperty.fromTransport(),
+    visibility = this.visibility.fromTransport(),
 )
 
 private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
@@ -96,9 +97,10 @@ private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
     title = this.title ?: "",
     description = this.description ?: "",
     address = this.address ?: "",
-    visibility = this.visibility.fromTransport(),
     dealSide = this.dealside.fromTransport(),
     rentType = this.renttype.fromTransport(),
+    realtyProperty = this.realtyproperty.fromTransport(),
+    visibility = this.visibility.fromTransport(),
 )
 
 private fun AdVisibility?.fromTransport(): ReAgVisibility = when(this) {
@@ -110,7 +112,7 @@ private fun AdVisibility?.fromTransport(): ReAgVisibility = when(this) {
 
 private fun DealSide?.fromTransport(): ReAgDealSide = when(this) {
     DealSide.DEMAND -> ReAgDealSide.DEMAND
-    DealSide.PROPOSAL -> ReAgDealSide.SUPPLY
+    DealSide.PROPOSAL -> ReAgDealSide.PROPOSAL
     null -> ReAgDealSide.NONE
 }
 
@@ -118,4 +120,15 @@ private fun RentType?.fromTransport(): ReAgRentType = when(this) {
     RentType.LONG -> ReAgRentType.LONG
     RentType.DAILY -> ReAgRentType.DAILY
     null -> ReAgRentType.NONE
+}
+
+private fun RealtyProperty?.fromTransport(): ReAgRealtyProperty = when (this) {
+    RealtyProperty.FLAT -> ReAgRealtyProperty.FLAT
+    RealtyProperty.ROOM -> ReAgRealtyProperty.ROOM
+    RealtyProperty.HOTEL -> ReAgRealtyProperty.HOTEL
+    RealtyProperty.HOSTEL -> ReAgRealtyProperty.HOSTEL
+    RealtyProperty.HOUSE -> ReAgRealtyProperty.HOUSE
+    RealtyProperty.OFFICE -> ReAgRealtyProperty.OFFICE
+    RealtyProperty.STORAGE -> ReAgRealtyProperty.STORAGE
+    null -> ReAgRealtyProperty.NONE
 }

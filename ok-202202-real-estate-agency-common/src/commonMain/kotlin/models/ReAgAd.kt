@@ -12,7 +12,7 @@ data class ReAgAd(
 
     val dealSide: ReAgDealSide = ReAgDealSide.NONE,
     val rentType: ReAgRentType = ReAgRentType.NONE,
-
+    val realtyProperty: ReAgRealtyProperty = ReAgRealtyProperty.NONE,
     var realty: IReAgAdRealty = IReAgAdRealty.NONE,
     val permissionsClient: MutableSet<ReAgAdPermissionClient> = mutableSetOf()
 )
