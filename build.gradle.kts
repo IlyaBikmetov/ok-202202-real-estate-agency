@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.6.20-RC"
+    kotlin("jvm")
 }
 
 group = "ru.ibikmetov.kotlin.realestateagency"

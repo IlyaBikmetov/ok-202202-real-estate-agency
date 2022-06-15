@@ -44,14 +44,12 @@ class AdService {
     }
 
     fun deleteAd(context: ReAgContext): ReAgContext {
-        context.adRequest
         return context.apply {
             context.adRequest = adRequest
         }
     }
 
     fun searchAd(context: ReAgContext): ReAgContext {
-        context.adRequest
         return context.apply {
             context.adRequest = adRequest
         }
