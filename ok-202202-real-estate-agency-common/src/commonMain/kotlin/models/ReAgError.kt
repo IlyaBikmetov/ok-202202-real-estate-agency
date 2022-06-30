@@ -6,4 +6,5 @@ data class ReAgError(
     val field: String = "",
     val message: String = "",
     val exception: Throwable? = null,
+    val level: ReAgErrorLevels = ReAgErrorLevels.ERROR,
 )

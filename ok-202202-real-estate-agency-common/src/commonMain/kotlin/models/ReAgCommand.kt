@@ -7,5 +7,4 @@ enum class ReAgCommand {
     UPDATE,
     DELETE,
     SEARCH,
-    OFFERS,
 }

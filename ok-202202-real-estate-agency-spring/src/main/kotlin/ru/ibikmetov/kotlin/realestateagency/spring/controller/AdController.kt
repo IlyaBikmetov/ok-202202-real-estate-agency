@@ -3,8 +3,7 @@ package ru.ibikmetov.kotlin.realestateagency.spring.controller
 import org.springframework.web.bind.annotation.*
 
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
-import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
-import ru.ibikmetov.kotlin.realestateagency.mappers.*
+import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgCommand
 import ru.ibikmetov.kotlin.realestateagency.spring.service.AdService
 
 @RequestMapping("ad")
@@ -12,37 +11,32 @@ import ru.ibikmetov.kotlin.realestateagency.spring.service.AdService
 class AdController(private val adService: AdService) {
 
     @PostMapping("create")
-    fun adCreate(@RequestBody body: AdCreateRequest): AdCreateResponse {
-        val context = ReAgContext()
-        context.fromTransport(body)
-        return adService.createAd(context).toTransportCreate()
-    }
+    fun adCreate(@RequestBody request: AdCreateRequest): AdCreateResponse =
+        controllerHelper(request, ReAgCommand.CREATE) {
+            adService.createAd(this)
+        }
 
     @PostMapping("read")
-    fun adRead(@RequestBody body: AdReadRequest): AdReadResponse {
-        val context = ReAgContext()
-        context.fromTransport(body)
-        return adService.readAd(context).toTransportRead()
-    }
+    fun adRead(@RequestBody request: AdReadRequest): AdReadResponse =
+        controllerHelper(request, ReAgCommand.READ) {
+            adService.readAd(this)
+        }
 
-    @PostMapping("update")
-    fun adRead(@RequestBody body: AdUpdateRequest): AdUpdateResponse {
-        val context = ReAgContext()
-        context.fromTransport(body)
-        return adService.updateAd(context).toTransportUpdate()
-    }
+    @RequestMapping("update", method = [RequestMethod.POST])
+    fun adUpdate(@RequestBody request: AdUpdateRequest): AdUpdateResponse =
+        controllerHelper(request, ReAgCommand.UPDATE) {
+            adService.updateAd(this)
+        }
 
     @PostMapping("delete")
-    fun adDelete(@RequestBody body: AdDeleteRequest): AdDeleteResponse {
-        val context = ReAgContext()
-        context.fromTransport(body)
-        return adService.deleteAd(context).toTransportDelete()
-    }
+    fun adDelete(@RequestBody request: AdDeleteRequest): AdDeleteResponse =
+        controllerHelper(request, ReAgCommand.DELETE) {
+            adService.deleteAd(this)
+        }
 
     @PostMapping("search")
-    fun adSearch(@RequestBody body: AdSearchRequest): AdSearchResponse {
-        val context = ReAgContext()
-        context.fromTransport(body)
-        return adService.searchAd(context).toTransportSearch()
-    }
+    fun adSearch(@RequestBody request: AdSearchRequest): AdSearchResponse =
+        controllerHelper(request, ReAgCommand.SEARCH) {
+            adService.searchAd(this)
+        }
 }
