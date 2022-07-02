@@ -18,6 +18,13 @@ data class ReAgContext(
     var timeStart: Instant = Clock.System.now(),
     var adRequest: ReAgAd = ReAgAd(),
     var adFilterRequest: ReAgAdFilter = ReAgAdFilter(),
+
+    var adValidating: ReAgAd = ReAgAd(),
+    var adFilterValidating: ReAgAdFilter = ReAgAdFilter(),
+
+    var adValidated: ReAgAd = ReAgAd(),
+    var adFilterValidated: ReAgAdFilter = ReAgAdFilter(),
+
     var adResponse: ReAgAd = ReAgAd(),
     var adsResponse: MutableList<ReAgAd> = mutableListOf()
 )

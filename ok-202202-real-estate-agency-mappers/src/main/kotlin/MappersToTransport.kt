@@ -8,10 +8,9 @@ import ru.ibikmetov.kotlin.realestateagency.mappers.exceptions.UnknownReAgComman
 fun ReAgContext.toTransportAd(): IResponse = when (val cmd = command) {
     ReAgCommand.CREATE -> toTransportCreate()
     ReAgCommand.READ -> toTransportRead()
-    ReAgCommand.UPDATE -> toTransportRead()
-    ReAgCommand.DELETE -> toTransportRead()
-    ReAgCommand.SEARCH -> toTransportRead()
-    ReAgCommand.OFFERS -> toTransportRead()
+    ReAgCommand.UPDATE -> toTransportUpdate()
+    ReAgCommand.DELETE -> toTransportDelete()
+    ReAgCommand.SEARCH -> toTransportSearch()
     ReAgCommand.NONE -> throw UnknownReAgCommand(cmd)
 }
 

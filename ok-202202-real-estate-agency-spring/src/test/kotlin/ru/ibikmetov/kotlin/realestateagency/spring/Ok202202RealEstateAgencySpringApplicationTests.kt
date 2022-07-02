@@ -10,7 +10,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.reactive.server.WebTestClient
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
-import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgAdId
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -37,7 +36,7 @@ class StubTest {
             .expectStatus().isOk
             .expectBody(AdCreateResponse::class.java).consumeWith {
                 val dat = it.responseBody
-                assertThat(dat?.ad?.id).isEqualTo("999")
+                assertThat(dat?.ad?.id).isEqualTo("1")
             }
     }
 
@@ -54,7 +53,7 @@ class StubTest {
                     requestType = "read",
                     debug = AdDebug(mode = AdRequestDebugMode.STUB, stub = AdRequestDebugStubs.SUCCESS),
                     ad = BaseAdIdRequestAd(
-                        id = "777"
+                        id = "1"
                     )
                 )
             )
@@ -62,14 +61,14 @@ class StubTest {
             .expectStatus().isOk
             .expectBody(AdReadResponse::class.java).consumeWith {
                 val dat = it.responseBody
-                assertThat(dat?.ad?.id).isEqualTo("777")
-                assertThat(dat?.ad?.title).isEqualTo("Title2")
-                assertThat(dat?.ad?.description).isEqualTo("Description2")
-                assertThat(dat?.ad?.address).isEqualTo("Address2")
+                assertThat(dat?.ad?.id).isEqualTo("1")
+                assertThat(dat?.ad?.title).isEqualTo("Требуется квартира")
+                assertThat(dat?.ad?.description).isEqualTo("Требуется небольшая квартира для студента, желательно недалеко от университета")
+                assertThat(dat?.ad?.address).isEqualTo("Ленина")
                 assertThat(dat?.ad?.dealside).isEqualTo(DealSide.DEMAND)
-                assertThat(dat?.ad?.renttype).isEqualTo(RentType.DAILY)
-                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.OFFICE)
-                assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.OWNER_ONLY)
+                assertThat(dat?.ad?.renttype).isEqualTo(RentType.LONG)
+                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
+                assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.PUBLIC)
             }
     }
 
@@ -85,28 +84,28 @@ class StubTest {
                 requestType = "update",
                 debug = AdDebug(mode = AdRequestDebugMode.STUB, stub = AdRequestDebugStubs.SUCCESS),
                 ad = AdUpdateObject(
-                    title = "Title3",
-                    description = "Description3",
-                    address = "Address3",
-                    dealside = DealSide.PROPOSAL,
+                    title = "Требуется квартира",
+                    description = "Требуется небольшая квартира для студента, желательно недалеко от университета",
+                    address = "Ленина",
+                    dealside = DealSide.DEMAND,
                     renttype = RentType.LONG,
-                    realtyproperty = RealtyProperty.ROOM,
-                    visibility = AdVisibility.REGISTERED_ONLY,
-                    id = "888"
+                    realtyproperty = RealtyProperty.FLAT,
+                    visibility = AdVisibility.PUBLIC,
+                    id = "1"
                 )
             ))
             .exchange()
             .expectStatus().isOk
             .expectBody(AdUpdateResponse::class.java).consumeWith {
                 val dat = it.responseBody
-                assertThat(dat?.ad?.id).isEqualTo("888")
-                assertThat(dat?.ad?.title).isEqualTo("Title3")
-                assertThat(dat?.ad?.description).isEqualTo("Description3")
-                assertThat(dat?.ad?.address).isEqualTo("Address3")
-                assertThat(dat?.ad?.dealside).isEqualTo(DealSide.PROPOSAL)
+                assertThat(dat?.ad?.id).isEqualTo("1")
+                assertThat(dat?.ad?.title).isEqualTo("Требуется квартира")
+                assertThat(dat?.ad?.description).isEqualTo("Требуется небольшая квартира для студента, желательно недалеко от университета")
+                assertThat(dat?.ad?.address).isEqualTo("Ленина")
+                assertThat(dat?.ad?.dealside).isEqualTo(DealSide.DEMAND)
                 assertThat(dat?.ad?.renttype).isEqualTo(RentType.LONG)
-                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.ROOM)
-                assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.REGISTERED_ONLY)
+                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
+                assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.PUBLIC)
             }
     }
 
