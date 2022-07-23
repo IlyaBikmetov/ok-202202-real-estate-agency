@@ -5,6 +5,7 @@ pluginManagement {
         val kotlinVersion: String by settings
         val koTestVersion: String by settings
         val openapiVersion: String by settings
+        val bmuschkoVersion: String by settings
 
         kotlin("jvm") version kotlinVersion apply false
         kotlin("multiplatfrom") version kotlinVersion apply false
@@ -20,6 +21,7 @@ pluginManagement {
 
         id("org.springframework.boot") version springBootVersion
         id("io.spring.dependency-management") version springDependencyVersion
+        id("com.bmuschko.docker-java-application") version bmuschkoVersion
         kotlin("plugin.spring") version springPluginVersion
     }
 }
@@ -30,3 +32,5 @@ include("ok-202202-real-estate-agency-mappers")
 include("ok-202202-real-estate-agency-spring")
 include("ok-202202-real-estate-agency-business")
 include("ok-202202-real-estate-agency-stubs")
+//include("ok-202202-real-estate-agency-services")
+include("ok-202202-real-estate-agency-async")

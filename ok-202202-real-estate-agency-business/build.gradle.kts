@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     jvm {}
-    linuxX64 {}
+    //linuxX64 {}
 
     sourceSets {
         val coroutinesVersion: String by project
@@ -20,7 +20,6 @@ kotlin {
                 mavenCentral()
                 maven { url = uri("https://jitpack.io") }
             }
-
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation(project(":ok-202202-real-estate-agency-common"))

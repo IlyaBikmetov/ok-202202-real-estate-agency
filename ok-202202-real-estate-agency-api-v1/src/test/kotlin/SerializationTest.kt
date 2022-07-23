@@ -1,5 +1,6 @@
 import org.junit.Test
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
+import ru.ibikmetov.kotlin.realestateagency.api.v1.*
 import kotlin.test.assertContains
 
 class SerializationTest {
