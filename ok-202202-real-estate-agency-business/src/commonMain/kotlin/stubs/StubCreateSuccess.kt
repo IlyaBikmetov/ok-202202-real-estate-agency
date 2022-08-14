@@ -7,7 +7,7 @@ import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgDealSide
 import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgState
 import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgVisibility
 import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgStubs
-import ru.ibikmetov.kotlin.realestateagency.stubs.ReAgAdStub
+import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgAdStub
 
 fun ICorChainDsl<ReAgContext>.stubCreateSuccess(title: String) = worker {
     this.title = title

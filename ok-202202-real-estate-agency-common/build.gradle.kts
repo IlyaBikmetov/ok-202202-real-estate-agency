@@ -1,21 +1,13 @@
 plugins {
-    kotlin("multiplatform")
+    kotlin("jvm")
 }
 
-kotlin {
-    jvm {}
-    macosX64 {}
-    linuxX64 {}
+dependencies {
+    val datetimeVersion: String by project
+    val coroutinesVersion: String by project
 
-    sourceSets {
-        val datetimeVersion: String by project
+    api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
 
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-
-                api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
-            }
-        }
-    }
+    implementation(kotlin("stdlib-common"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 }
