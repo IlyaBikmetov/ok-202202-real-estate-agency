@@ -12,6 +12,7 @@ import ru.ibikmetov.kotlin.realestateagency.common.repository.DbAdIdRequest
 import ru.ibikmetov.kotlin.realestateagency.common.repository.DbAdRequest
 import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgAdStubFlats
 import java.net.InetSocketAddress
+import java.util.*
 
 fun main() = runBlocking {
     val repo = Init.repository(emptyList(), "real_estate_agency")
@@ -37,9 +38,15 @@ object Init {
     }
 
     private val session by lazy {
+        val props = javaClass.classLoader.getResourceAsStream("config.properties").use {
+            Properties().apply { load(it) }
+        }
+        println(props["server"].toString())
+        println(props["port"].toString())
+        println(props["datacenter"].toString())
         CqlSession.builder()
-            .addContactPoint(InetSocketAddress("localhost", 9042))
-            .withLocalDatacenter("datacenter1")
+            .addContactPoint(InetSocketAddress(props["server"].toString(), props["port"].toString().toInt()))
+            .withLocalDatacenter(props["datacenter"].toString())
             .withAuthCredentials(null.toString(), null.toString())
             .withCodecRegistry(codecRegistry)
             .build()

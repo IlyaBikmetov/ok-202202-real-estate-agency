@@ -24,7 +24,7 @@ class RepoAdCassandra(
     private fun errorToAdsResponse(e: Exception) = DbAdsResponse.error(e.asReAgError())
 
     private suspend fun <DbRes, Response> doDbAction(
-        name: String,
+        name: AdOperation,
         daoAction: () -> CompletionStage<DbRes>,
         okToResponse: (DbRes) -> Response,
         errorToResponse: (Exception) -> Response
@@ -40,7 +40,7 @@ class RepoAdCassandra(
     override suspend fun createAd(rq: DbAdRequest): DbAdResponse {
         val new = rq.ad.copy(id = ReAgAdId(randomUuid()), lock = ReAgAdLock(randomUuid()))
         return doDbAction(
-            "create",
+            AdOperation.CREATE,
             { dao.create(AdCassandraDTO(new)) },
             { DbAdResponse.success(new) },
             ::errorToAdResponse
@@ -51,7 +51,7 @@ class RepoAdCassandra(
         if (rq.id == ReAgAdId.NONE)
             ID_IS_EMPTY
         else doDbAction(
-            "read",
+            AdOperation.READ,
             { dao.read(rq.id.asString()) },
             { found ->
                 if (found != null) DbAdResponse.success(found.toAdModel())
@@ -68,7 +68,7 @@ class RepoAdCassandra(
             val new = rq.ad.copy(lock = ReAgAdLock(randomUuid()))
             val dto = AdCassandraDTO(new)
             doDbAction(
-                "update",
+                AdOperation.UPDATE,
                 { dao.update(dto, prevLock) },
                 { updated ->
                     if (updated) DbAdResponse.success(new)
@@ -82,7 +82,7 @@ class RepoAdCassandra(
         if (rq.id == ReAgAdId.NONE)
             ID_IS_EMPTY
         else doDbAction(
-            "delete",
+            AdOperation.DELETE,
             { dao.delete(rq.id.asString(), rq.lock.asString()) },
             { deleted ->
                 if (deleted) DbAdResponse(null, true)
@@ -94,7 +94,7 @@ class RepoAdCassandra(
 
     override suspend fun searchAd(rq: DbAdFilterRequest): DbAdsResponse =
         doDbAction(
-            "search",
+            AdOperation.SEARCH,
             { dao.search(rq) },
             { found ->
                 DbAdsResponse.success(found.map { it.toAdModel() })

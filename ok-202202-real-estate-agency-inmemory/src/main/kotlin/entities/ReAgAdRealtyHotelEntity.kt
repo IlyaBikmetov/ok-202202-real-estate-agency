@@ -1,4 +1,4 @@
-package ru.ibikmetov.kotlin.realestateagency.inmemory.entityes
+package ru.ibikmetov.kotlin.realestateagency.inmemory.entities
 
 import ru.ibikmetov.kotlin.realestateagency.common.models.realty.ReAgAdRealtyHotel
 

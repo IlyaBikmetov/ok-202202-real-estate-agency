@@ -7,7 +7,7 @@ import kotlinx.coroutines.sync.withLock
 import ru.ibikmetov.kotlin.realestateagency.common.helpers.errorConcurrency
 import ru.ibikmetov.kotlin.realestateagency.common.models.*
 import ru.ibikmetov.kotlin.realestateagency.common.repository.*
-import ru.ibikmetov.kotlin.realestateagency.inmemory.entityes.AdEntity
+import ru.ibikmetov.kotlin.realestateagency.inmemory.entities.AdEntity
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
