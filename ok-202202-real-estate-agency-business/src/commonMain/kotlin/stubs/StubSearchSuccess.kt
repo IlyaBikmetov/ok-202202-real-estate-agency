@@ -5,7 +5,7 @@ import com.crowdproj.kotlin.cor.handlers.worker
 import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
 import ru.ibikmetov.kotlin.realestateagency.common.models.*
 import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgStubs
-import ru.ibikmetov.kotlin.realestateagency.stubs.ReAgAdStub
+import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgAdStub
 
 fun ICorChainDsl<ReAgContext>.stubSearchSuccess(title: String) = worker {
     this.title = title
