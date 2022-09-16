@@ -67,6 +67,9 @@ class RepoAdCassandra(
             val prevLock = rq.ad.lock.asString()
             val new = rq.ad.copy(lock = ReAgAdLock(randomUuid()))
             val dto = AdCassandraDTO(new)
+            println("id: ${rq.ad.id}")
+            println("prevLock: $prevLock")
+            println("new: ${new.lock.asString()}")
             doDbAction(
                 AdOperation.UPDATE,
                 { dao.update(dto, prevLock) },

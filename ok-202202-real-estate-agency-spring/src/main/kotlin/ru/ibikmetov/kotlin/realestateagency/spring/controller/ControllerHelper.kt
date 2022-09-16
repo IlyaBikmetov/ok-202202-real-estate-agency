@@ -2,11 +2,13 @@ package ru.ibikmetov.kotlin.realestateagency.spring.controller
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
+import org.springframework.security.core.context.SecurityContextHolder
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.IRequest
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.IResponse
 import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
 import ru.ibikmetov.kotlin.realestateagency.common.helpers.asReAgError
 import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgCommand
+import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgPrincipalModel
 import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgState
 import ru.ibikmetov.kotlin.realestateagency.mappers.fromTransport
 import ru.ibikmetov.kotlin.realestateagency.mappers.toTransportAd
@@ -18,6 +20,10 @@ inline fun <reified Q : IRequest, reified R : IResponse> controllerHelper(
 ): R = runBlocking {
     val ctx = ReAgContext(
         timeStart = Clock.System.now(),
+        principal = SecurityContextHolder
+            .getContext()
+            .authentication
+            .principal as ReAgPrincipalModel
     )
     try {
         ctx.fromTransport(request)

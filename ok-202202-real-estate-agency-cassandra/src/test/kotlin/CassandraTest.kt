@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 class CassandraTest {
     @Test
     fun create() = runBlocking {
-        val repo = Init.repository(emptyList(), "real_estate_agency")
+        val repo = InitCassandra.repository(emptyList())
         val flat1 = ReAgAdStubFlats.AD_DEMAND_FLAT
         val response = repo.createAd(DbAdRequest(flat1))
         val response2 = repo.readAd(DbAdIdRequest(response.result!!.id, response.result!!.lock))
@@ -34,12 +34,14 @@ class CassandraTest {
 
     @Test
     fun update() = runBlocking {
-        val repo = Init.repository(emptyList(), "real_estate_agency")
+        val repo = InitCassandra.repository(emptyList())
         var flat1 = ReAgAdStubFlats.AD_PROPOSAL_FLAT
         val response = repo.createAd(DbAdRequest(flat1))
         flat1 = response.result!!
-        flat1.rentType = ReAgRentType.DAILY
+        println("flat1.response.result: ${response.result!!}")
+        flat1.rentType = ReAgRentType.LONG
         val response2 = repo.updateAd(DbAdRequest(flat1))
+        println("flat1.response2.result: ${response2.result!!}")
         if (response2.isSuccess) {
             val response3 = repo.readAd(DbAdIdRequest(response2.result!!.id, response2.result!!.lock))
             if (response3.isSuccess) {
@@ -50,26 +52,22 @@ class CassandraTest {
                 assertEquals(flat1.ownerId, flat2.ownerId)
                 assertEquals(flat1.visibility, flat2.visibility)
                 assertEquals(flat1.dealSide, flat2.dealSide)
-                assertEquals(ReAgRentType.DAILY, flat2.rentType)
+                assertEquals(flat1.rentType, flat2.rentType)
                 assertEquals(flat1.realty, flat2.realty)
-                repo.deleteAd(DbAdIdRequest(flat2.id, flat2.lock))
+                //repo.deleteAd(DbAdIdRequest(flat2.id, flat2.lock))
             }
         }
     }
 
     @Test
     fun search() = runBlocking {
-        val repo = Init.repository(emptyList(), "real_estate_agency")
+        val repo = InitCassandra.repository(emptyList())
         var flat1 = ReAgAdStubFlats.AD_PROPOSAL_FLAT
         var flat2 = ReAgAdStubFlats.AD_DEMAND_FLAT
         val response1 = repo.createAd(DbAdRequest(flat1))
         val response2 = repo.createAd(DbAdRequest(flat2))
         if (response1.isSuccess && response2.isSuccess) {
-            val filter = DbAdFilterRequest("",
-                ReAgUserId.NONE,
-                ReAgDealSide.DEMAND,
-                ReAgRentType.NONE
-            )
+            val filter = DbAdFilterRequest("")
             val response3 = repo.searchAd(filter)
             if (response3.isSuccess && response3.result!!.isNotEmpty()) {
                 val flat3 = response3.result!![0]
@@ -87,5 +85,4 @@ class CassandraTest {
             }
         }
     }
-
 }

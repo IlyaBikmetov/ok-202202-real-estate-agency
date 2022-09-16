@@ -67,7 +67,7 @@ class StubTest {
                 assertThat(dat?.ad?.address).isEqualTo("Ленина")
                 assertThat(dat?.ad?.dealside).isEqualTo(DealSide.DEMAND)
                 assertThat(dat?.ad?.renttype).isEqualTo(RentType.LONG)
-                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
+                assertThat(dat?.ad?.realty?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
                 assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.PUBLIC)
             }
     }
@@ -89,7 +89,6 @@ class StubTest {
                     address = "Ленина",
                     dealside = DealSide.DEMAND,
                     renttype = RentType.LONG,
-                    realtyproperty = RealtyProperty.FLAT,
                     visibility = AdVisibility.PUBLIC,
                     id = "1"
                 )
@@ -104,7 +103,7 @@ class StubTest {
                 assertThat(dat?.ad?.address).isEqualTo("Ленина")
                 assertThat(dat?.ad?.dealside).isEqualTo(DealSide.DEMAND)
                 assertThat(dat?.ad?.renttype).isEqualTo(RentType.LONG)
-                assertThat(dat?.ad?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
+                assertThat(dat?.ad?.realty?.realtyproperty).isEqualTo(RealtyProperty.FLAT)
                 assertThat(dat?.ad?.visibility).isEqualTo(AdVisibility.PUBLIC)
             }
     }

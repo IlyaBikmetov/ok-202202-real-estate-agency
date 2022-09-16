@@ -20,15 +20,10 @@ class AdCassandraSearchProvider(
     fun search(filter: DbAdFilterRequest): CompletionStage<Collection<AdCassandraDTO>> {
         var select = entityHelper.selectStart().allowFiltering()
 
-        if (filter.title.isNotBlank()) {
+        if (filter.search.isNotBlank() && filter.dealSide == ReAgDealSide.NONE && filter.rentType == ReAgRentType.NONE) {
             select = select
-                .whereColumn(AdCassandraDTO.COLUMN_TITLE)
-                .like(QueryBuilder.literal("%${filter.title}%"))
-        }
-        if (filter.ownerId != ReAgUserId.NONE) {
-            select = select
-                .whereColumn(AdCassandraDTO.COLUMN_OWNER_ID)
-                .isEqualTo(QueryBuilder.literal(filter.ownerId.asString(), context.session.context.codecRegistry))
+                .whereColumn(AdCassandraDTO.COLUMN_DESCRIPTION)
+                .like(QueryBuilder.literal("%${filter.search}%"))
         }
         if (filter.dealSide != ReAgDealSide.NONE) {
             select = select

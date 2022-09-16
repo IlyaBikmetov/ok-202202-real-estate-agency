@@ -1,8 +1,7 @@
 package ru.ibikmetov.kotlin.realestateagency.spring.controller
 
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
 import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgCommand
 import ru.ibikmetov.kotlin.realestateagency.spring.service.AdService

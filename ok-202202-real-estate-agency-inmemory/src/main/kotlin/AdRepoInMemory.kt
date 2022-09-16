@@ -103,8 +103,11 @@ class AdRepoInMemory(
     override suspend fun searchAd(rq: DbAdFilterRequest): DbAdsResponse {
         val result = cache.asMap().asSequence()
             .filter { entry ->
-                rq.ownerId.takeIf { it != ReAgUserId.NONE }?.let {
-                    it.asString() == entry.value.ownerId
+                rq.search.takeIf { it.isNotBlank()
+                        && rq.dealSide == ReAgDealSide.NONE
+                        && rq.rentType == ReAgRentType.NONE
+                }?.let {
+                    entry.value.description?.indexOf(it)!! >= 0
                 } ?: true
             }
             .filter { entry ->
@@ -113,8 +116,8 @@ class AdRepoInMemory(
                 } ?: true
             }
             .filter { entry ->
-                rq.title.takeIf { it.isNotBlank() }?.let {
-                    entry.value.title?.contains(it) ?: false
+                rq.rentType.takeIf { it != ReAgRentType.NONE }?.let {
+                    it.name == entry.value.rentType
                 } ?: true
             }
             .map { it.value.toInternal() }

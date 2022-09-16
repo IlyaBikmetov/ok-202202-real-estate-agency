@@ -15,6 +15,7 @@ data class ReAgAd(
     val realtyProperty: ReAgRealtyProperty = ReAgRealtyProperty.NONE,
     var realty: IReAgAdRealty = IReAgAdRealty.NONE,
     val permissionsClient: MutableSet<ReAgAdPermissionClient> = mutableSetOf(),
+    var principalRelations: Set<ReAgPrincipalRelations> = emptySet(),
     val lock: ReAgAdLock = ReAgAdLock.NONE
 ) {
     fun deepCopy(
@@ -30,6 +31,7 @@ data class ReAgAd(
         realtyProperty = this@ReAgAd.realtyProperty,
         realty = this@ReAgAd.realty.deepCopy(),
         permissionsClient = this@ReAgAd.permissionsClient.toMutableSet(),
+        principalRelations = this@ReAgAd.principalRelations,
         lock = this@ReAgAd.lock
     )
 }

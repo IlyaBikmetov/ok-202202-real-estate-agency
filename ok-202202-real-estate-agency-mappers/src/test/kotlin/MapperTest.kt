@@ -22,7 +22,7 @@ class MapperTest {
                 address = "address",
                 dealside = DealSide.DEMAND,
                 renttype = RentType.DAILY,
-                realtyproperty = RealtyProperty.STORAGE,
+                //realtyproperty = RealtyProperty.STORAGE,
                 visibility = AdVisibility.PUBLIC,
             ),
         )
@@ -75,7 +75,7 @@ class MapperTest {
         assertEquals("address", req.ad?.address)
         assertEquals(DealSide.PROPOSAL, req.ad?.dealside)
         assertEquals(RentType.DAILY, req.ad?.renttype)
-        assertEquals(RealtyProperty.ROOM, req.ad?.realtyproperty)
+        assertEquals(RealtyProperty.ROOM, req.ad?.realty?.realtyproperty)
         assertEquals(AdVisibility.PUBLIC, req.ad?.visibility)
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)
