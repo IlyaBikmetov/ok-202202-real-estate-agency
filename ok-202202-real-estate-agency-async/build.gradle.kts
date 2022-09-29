@@ -9,7 +9,7 @@ apply(plugin = "kotlinx-atomicfu")
 plugins {
     application
     kotlin("jvm")
-    id("com.bmuschko.docker-java-application")
+    id("com.bmuschko.docker-java-application") version "7.4.0"
 }
 
 application {
@@ -25,12 +25,12 @@ docker {
         images.set(
             listOf(
                 "$imageName:${project.version}",
-                "$imageName:latest"
             )
         )
         jvmArgs.set(listOf("-Xms256m", "-Xmx512m"))
     }
 }
+
 
 repositories {
     mavenCentral()
@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":ok-202202-real-estate-agency-common"))
     implementation(project(":ok-202202-real-estate-agency-mappers"))
     implementation(project(":ok-202202-real-estate-agency-spring"))
+    implementation(project(":ok-202202-real-estate-agency-cassandra"))
 
     testImplementation(kotlin("test-junit"))
 }

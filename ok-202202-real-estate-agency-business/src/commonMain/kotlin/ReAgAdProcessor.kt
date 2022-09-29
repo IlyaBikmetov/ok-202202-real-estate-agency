@@ -12,18 +12,19 @@ import ru.ibikmetov.kotlin.realestateagency.business.general.initStatus
 import ru.ibikmetov.kotlin.realestateagency.business.general.prepareResult
 import ru.ibikmetov.kotlin.realestateagency.business.permission.accessValidation
 import ru.ibikmetov.kotlin.realestateagency.business.permission.chainPermissions
+import ru.ibikmetov.kotlin.realestateagency.business.permission.frontPermissions
 import ru.ibikmetov.kotlin.realestateagency.business.repo.*
+import ru.ibikmetov.kotlin.realestateagency.cassandra.InitCassandra
 import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
 import ru.ibikmetov.kotlin.realestateagency.common.models.*
 
-class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
+class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCassandra.repository())) {
     suspend fun exec(ctx: ReAgContext) = BusinessChain.exec(ctx.apply { settings = this@ReAgAdProcessor.settings })
 
     companion object {
         private val BusinessChain = rootChain<ReAgContext> {
             initStatus("Инициализация статуса")
             initRepo("Инициализация репозитория")
-
             operation("Создание объявления", ReAgCommand.CREATE) {
                 stubs("Обработка стабов") {
                     stubCreateSuccess("Имитация успешной обработки")
@@ -34,7 +35,11 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                 }
                 chain {
                     title = "Валидация запроса"
-                    worker("Копируем поля в adValidating") { adValidating = adRequest.deepCopy() }
+                    worker("Копируем поля в adValidating") {
+                        println("ReAgAdProcessor adRequest: $adRequest")
+                        adValidating = adRequest.deepCopy()
+                        println("ReAgAdProcessor adValidating: $adValidating")
+                    }
                     worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
                     worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
                     // validate all fields for html TAGs to avoid
@@ -50,7 +55,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     on { state == ReAgState.RUNNING }
                     handle {
                         adRepoRead = adValidated
-                        adRepoRead.ownerId = principal.id
+                        //adRepoRead.ownerId = principal.id
                     }
                 }
                 accessValidation("Вычисление прав доступа")
@@ -59,7 +64,10 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     repoPrepareCreate("Подготовка объекта для сохранения")
                     repoCreate("Создание объявления в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
+
+                /*
                 worker {
                     title = "Подготовка ответа"
                     on { state == ReAgState.RUNNING }
@@ -68,6 +76,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                         adResponse = adRepoDone
                     }
                 }
+                 */
             }
             operation("Получить объявление", ReAgCommand.READ) {
                 stubs("Обработка стабов") {
@@ -90,7 +99,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     on { state == ReAgState.RUNNING }
                     handle {
                         adRepoRead = adValidated
-                        adRepoRead.ownerId = principal.id
+                        //adRepoRead.ownerId = principal.id
                     }
                 }
                 accessValidation("Вычисление прав доступа")
@@ -99,7 +108,9 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     repoPrepareRead("Подготовка объекта к чтению из БД")
                     repoRead("Чтение объявления в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
+                /*
                 worker {
                     title = "Подготовка ответа"
                     on { state == ReAgState.RUNNING }
@@ -108,6 +119,8 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                         adResponse = adRepoDone
                     }
                 }
+
+                 */
             }
             operation("Изменить объявление", ReAgCommand.UPDATE) {
                 stubs("Обработка стабов") {
@@ -138,7 +151,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     on { state == ReAgState.RUNNING }
                     handle {
                         adRepoRead = adValidated
-                        adRepoRead.ownerId = principal.id
+                        //adRepoRead.ownerId = principal.id
                     }
                 }
                 accessValidation("Вычисление прав доступа")
@@ -147,7 +160,9 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     repoPrepareUpdate("Подготовка объекта к обновлению в БД")
                     repoUpdate("Обновление объявления в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
+                /*
                 worker {
                     title = "Подготовка ответа"
                     on { state == ReAgState.RUNNING }
@@ -156,12 +171,15 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                         adResponse = adRepoDone
                     }
                 }
+
+                 */
             }
             operation("Удалить объявление", ReAgCommand.DELETE) {
                 stubs("Обработка стабов") {
                     stubDeleteSuccess("Имитация успешной обработки")
                     stubValidationBadId("Имитация ошибки валидации id")
                     stubDbError("Имитация ошибки работы с БД")
+                    stubNotDelete("Ошибка: невозможно удалить")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 chain {
@@ -178,7 +196,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     on { state == ReAgState.RUNNING }
                     handle {
                         adRepoRead = adValidated
-                        adRepoRead.ownerId = principal.id
+                        //adRepoRead.ownerId = principal.id
                     }
                 }
                 accessValidation("Вычисление прав доступа")
@@ -187,7 +205,9 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     repoPrepareDelete("Подготовка объекта к удалению из БД")
                     repoDelete("Удаление объявления в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
+                /*
                 worker {
                     title = "Подготовка ответа"
                     on { state == ReAgState.RUNNING }
@@ -196,6 +216,8 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                         adResponse = adRepoDone
                     }
                 }
+
+                 */
             }
             operation("Поиск объявлений", ReAgCommand.SEARCH) {
                 stubs("Обработка стабов") {
@@ -215,14 +237,16 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                     on { state == ReAgState.RUNNING }
                     handle {
                         adRepoRead = adValidated
-                        adRepoRead.ownerId = principal.id
+                        //adRepoRead.ownerId = principal.id
                     }
                 }
                 chain {
                     title = "Удаление объекта"
                     repoSearch("Поиск объявлений в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
+                /*
                 worker {
                     title = "Подготовка ответа"
                     on { state == ReAgState.RUNNING }
@@ -230,6 +254,8 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings()) {
                         state = ReAgState.FINISHING
                     }
                 }
+
+                 */
             }
         }.build()
     }

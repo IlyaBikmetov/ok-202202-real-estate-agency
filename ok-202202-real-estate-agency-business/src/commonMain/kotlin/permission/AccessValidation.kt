@@ -10,7 +10,7 @@ import ru.ibikmetov.kotlin.realestateagency.common.models.*
 fun ICorChainDsl<ReAgContext>.accessValidation(title: String) = chain {
     this.title = title
     description = "Вычисление прав доступа по группе принципала и таблице прав доступа"
-    on { state == ReAgState.RUNNING }
+    on { state == ReAgState.RUNNING && principal != ReAgPrincipalModel.NONE }
     worker("Вычисление отношения объявления к принципалу") {
         adRepoRead.principalRelations = adRepoRead.resolveRelationsTo(principal)
     }

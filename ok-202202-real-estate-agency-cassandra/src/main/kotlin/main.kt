@@ -12,7 +12,7 @@ import ru.ibikmetov.kotlin.realestateagency.common.repository.DbAdRequest
 import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgAdStubFlats
 
 fun main() = runBlocking {
-    val repo = InitCassandra.repository(emptyList())
+    val repo = InitCassandra.repository()
     var ad = ReAgAd(
         id = ReAgAdId("279a1782-b0fe-43d9-9ffd-814aa7540495"),
     )

@@ -18,6 +18,7 @@ fun ReAgContext.fromTransport(request: IRequest) = when(request){
 
 private fun String?.toAdId() = this?.let { ReAgAdId(it) } ?: ReAgAdId.NONE
 private fun String?.toAdLock() = this?.let { ReAgAdLock(it) } ?: ReAgAdLock.NONE
+private fun String?.toAdUserId() = this?.let { ReAgUserId(it) } ?: ReAgUserId.NONE
 private fun BaseAdIdRequestAd?.toAdWithId() = ReAgAd(
     id = this?.id.toAdId(),
     lock = this?.lock.toAdLock(),
@@ -96,6 +97,7 @@ private fun AdCreateObject.toInternal(): ReAgAd = ReAgAd(
     realtyProperty = this.realty?.realtyproperty.fromTransport(),
     visibility = this.visibility.fromTransport(),
     realty = this.realty.fromTransport(),
+    ownerId = this.ownerId.toAdUserId(),
 )
 
 private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
@@ -108,6 +110,7 @@ private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
     realtyProperty = this.realty?.realtyproperty.fromTransport(),
     visibility = this.visibility.fromTransport(),
     realty = this.realty.fromTransport(),
+    ownerId = this.ownerId.toAdUserId(),
     lock = this.lock.toAdLock(),
 )
 

@@ -236,6 +236,9 @@ components:
       type: object
       description: Объект описывает свойства, одинаковые для create и update
       properties:
+        ownerId:
+          type: string
+          description: Идентификатор пользователя
         title:
           type: string
           description: Заголовок объявления

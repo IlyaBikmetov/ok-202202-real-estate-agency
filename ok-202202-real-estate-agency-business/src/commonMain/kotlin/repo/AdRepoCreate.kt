@@ -12,7 +12,9 @@ fun ICorChainDsl<ReAgContext>.repoCreate(title: String) = worker {
     on { state == ReAgState.RUNNING }
     handle {
         val request = DbAdRequest(adRepoPrepare)
+        println("repoCreate request: $request")
         val result = adRepo.createAd(request)
+        println("repoCreate result: $result")
         val resultAd = result.result
         if (result.isSuccess && resultAd != null) {
             adRepoDone = resultAd

@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 class CassandraTest {
     @Test
     fun create() = runBlocking {
-        val repo = InitCassandra.repository(emptyList())
+        val repo = InitCassandra.repository()
         val flat1 = ReAgAdStubFlats.AD_DEMAND_FLAT
         val response = repo.createAd(DbAdRequest(flat1))
         val response2 = repo.readAd(DbAdIdRequest(response.result!!.id, response.result!!.lock))
@@ -34,7 +34,7 @@ class CassandraTest {
 
     @Test
     fun update() = runBlocking {
-        val repo = InitCassandra.repository(emptyList())
+        val repo = InitCassandra.repository()
         var flat1 = ReAgAdStubFlats.AD_PROPOSAL_FLAT
         val response = repo.createAd(DbAdRequest(flat1))
         flat1 = response.result!!
@@ -61,7 +61,7 @@ class CassandraTest {
 
     @Test
     fun search() = runBlocking {
-        val repo = InitCassandra.repository(emptyList())
+        val repo = InitCassandra.repository()
         var flat1 = ReAgAdStubFlats.AD_PROPOSAL_FLAT
         var flat2 = ReAgAdStubFlats.AD_DEMAND_FLAT
         val response1 = repo.createAd(DbAdRequest(flat1))

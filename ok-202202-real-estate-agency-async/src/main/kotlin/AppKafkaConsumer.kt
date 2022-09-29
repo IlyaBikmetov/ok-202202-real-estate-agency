@@ -15,6 +15,10 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.errors.WakeupException
 import ru.ibikmetov.kotlin.realestateagency.spring.service.AdService
 import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
+import ru.ibikmetov.kotlin.realestateagency.cassandra.InitCassandra
+import ru.ibikmetov.kotlin.realestateagency.common.models.*
+import ru.ibikmetov.kotlin.realestateagency.common.models.realty.ReAgAdRealtyHotel
+import ru.ibikmetov.kotlin.realestateagency.common.repository.DbAdRequest
 import java.time.Duration
 import java.util.*
 

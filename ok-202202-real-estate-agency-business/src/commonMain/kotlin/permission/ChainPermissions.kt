@@ -10,7 +10,7 @@ fun ICorChainDsl<ReAgContext>.chainPermissions(title: String) = worker {
     description = "Вычисление прав доступа для групп пользователей"
 
     on {
-        state == ReAgState.RUNNING
+        state == ReAgState.RUNNING && principal != ReAgPrincipalModel.NONE
     }
 
     handle {

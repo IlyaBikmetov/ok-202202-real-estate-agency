@@ -27,8 +27,8 @@ object InitCassandra {
     private val session by lazy {
         CqlSession.builder()
             .addContactPoint(InetSocketAddress(props["server"].toString(), props["port"].toString().toInt()))
+//            .addContactPoint(InetSocketAddress("localhost", props["port"].toString().toInt()))
             .withLocalDatacenter(props["datacenter"].toString())
-            .withAuthCredentials(null.toString(), null.toString())
             .withCodecRegistry(codecRegistry)
             .build()
     }
@@ -47,9 +47,9 @@ object InitCassandra {
         session.execute(AdCassandraDTO.descrIndex(keyspace, AdCassandraDTO.TABLE_NAME))
     }
 
-    fun repository(initObjects: List<ReAgAd>): RepoAdCassandra {
-        createSchema(props["keyspace"].toString())
-        val dao = mapper.adDao(props["keyspace"].toString(), AdCassandraDTO.TABLE_NAME)
+    fun repository(initObjects: List<ReAgAd> = emptyList()): RepoAdCassandra {
+        createSchema(keySpace())
+        val dao = mapper.adDao(keySpace(), AdCassandraDTO.TABLE_NAME)
         CompletableFutures
             .allDone(initObjects.map { dao.create(AdCassandraDTO(it)) })
             .toCompletableFuture()
@@ -57,5 +57,7 @@ object InitCassandra {
         return RepoAdCassandra(dao)
     }
 
-    fun keySpace() = props["keyspace"].toString()
+    fun session() = session
+
+    private fun keySpace() = props["keyspace"].toString()
 }

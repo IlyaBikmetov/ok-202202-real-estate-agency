@@ -1,8 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val bmuschkoVersion: String by project
+
 plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+    id("com.bmuschko.docker-spring-boot-application") version "7.4.0"
     kotlin("jvm")
     kotlin("plugin.spring")
 }
@@ -57,4 +60,13 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+docker {
+    springBootApplication {
+        baseImage.set("adoptopenjdk/openjdk11:alpine-jre")
+        maintainer.set("(c) Bikmetov")
+        ports.set(listOf(8082))
+        jvmArgs.set(listOf("-Dspring.profiles.active=production", "-Xmx2048m"))
+    }
 }
