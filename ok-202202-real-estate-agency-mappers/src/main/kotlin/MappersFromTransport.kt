@@ -3,6 +3,7 @@ package ru.ibikmetov.kotlin.realestateagency.mappers
 import ru.ibikmetov.kotlin.realestateagency.common.*
 import ru.ibikmetov.kotlin.realestateagency.api.v1.models.*
 import ru.ibikmetov.kotlin.realestateagency.common.models.*
+import ru.ibikmetov.kotlin.realestateagency.common.models.realty.*
 import ru.ibikmetov.kotlin.realestateagency.common.stubs.ReAgStubs
 import ru.ibikmetov.kotlin.realestateagency.mappers.exceptions.UnknownRequestClass
 
@@ -16,7 +17,12 @@ fun ReAgContext.fromTransport(request: IRequest) = when(request){
 }
 
 private fun String?.toAdId() = this?.let { ReAgAdId(it) } ?: ReAgAdId.NONE
-private fun BaseAdIdRequestAd?.toAdWithId() = ReAgAd(id = this?.id.toAdId())
+private fun String?.toAdLock() = this?.let { ReAgAdLock(it) } ?: ReAgAdLock.NONE
+private fun String?.toAdUserId() = this?.let { ReAgUserId(it) } ?: ReAgUserId.NONE
+private fun BaseAdIdRequestAd?.toAdWithId() = ReAgAd(
+    id = this?.id.toAdId(),
+    lock = this?.lock.toAdLock(),
+)
 private fun IRequest?.requestId() = this?.requestId?.let { ReAgRequestId(it) } ?: ReAgRequestId.NONE
 
 private fun AdDebug?.transportToWorkMode(): ReAgWorkMode = when(this?.mode) {
@@ -88,8 +94,10 @@ private fun AdCreateObject.toInternal(): ReAgAd = ReAgAd(
     address = this.address ?: "",
     dealSide = this.dealside.fromTransport(),
     rentType = this.renttype.fromTransport(),
-    realtyProperty = this.realtyproperty.fromTransport(),
+    realtyProperty = this.realty?.realtyproperty.fromTransport(),
     visibility = this.visibility.fromTransport(),
+    realty = this.realty.fromTransport(),
+    ownerId = this.ownerId.toAdUserId(),
 )
 
 private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
@@ -99,8 +107,11 @@ private fun AdUpdateObject.toInternal(): ReAgAd = ReAgAd(
     address = this.address ?: "",
     dealSide = this.dealside.fromTransport(),
     rentType = this.renttype.fromTransport(),
-    realtyProperty = this.realtyproperty.fromTransport(),
+    realtyProperty = this.realty?.realtyproperty.fromTransport(),
     visibility = this.visibility.fromTransport(),
+    realty = this.realty.fromTransport(),
+    ownerId = this.ownerId.toAdUserId(),
+    lock = this.lock.toAdLock(),
 )
 
 private fun AdVisibility?.fromTransport(): ReAgVisibility = when(this) {
@@ -132,3 +143,23 @@ private fun RealtyProperty?.fromTransport(): ReAgRealtyProperty = when (this) {
     RealtyProperty.STORAGE -> ReAgRealtyProperty.STORAGE
     null -> ReAgRealtyProperty.NONE
 }
+
+private fun IRealty?.fromTransport(): IReAgAdRealty = when (this) {
+    is AdRealtyFlat -> this.fromTransport()
+    is AdRealtyRoom -> this.fromTransport()
+    else -> ReAgAdRealtyNone
+}
+
+private fun AdRealtyFlat.fromTransport(): ReAgAdRealtyFlat = ReAgAdRealtyFlat(
+    this.square,
+    this.floor,
+    this.cntRooms,
+    ReAgAdRealtyStoveType.valueOf(this.stoveType.toString().uppercase()),
+    this.balcony,
+)
+
+private fun AdRealtyRoom.fromTransport(): ReAgAdRealtyRoom = ReAgAdRealtyRoom(
+    this.square,
+    this.floor,
+    this.balcony,
+)

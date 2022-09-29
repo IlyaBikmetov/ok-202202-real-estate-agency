@@ -4,11 +4,11 @@ import ru.ibikmetov.kotlin.realestateagency.common.models.realty.ReAgAdRealtyFla
 import ru.ibikmetov.kotlin.realestateagency.common.models.realty.ReAgAdRealtyStoveType
 
 data class ReAgAdRealtyFlatEntity(
-    var square: Float,
-    var floor: Int,
-    var cntRooms: Int,
+    var square: Float?,
+    var floor: Int?,
+    var cntRooms: Int?,
     var stoveType: ReAgAdRealtyStoveType,
-    var balcony: Boolean,
+    var balcony: Boolean?,
 ): IReAgAdRealtyEntity {
     constructor(model: ReAgAdRealtyFlat): this(
         square = model.square,

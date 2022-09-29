@@ -5,6 +5,7 @@ import com.datastax.oss.driver.api.mapper.annotations.CqlName
 import com.datastax.oss.driver.api.mapper.annotations.Entity
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
+import kotlinx.serialization.Serializable
 import ru.ibikmetov.kotlin.realestateagency.common.models.*
 
 @Entity
@@ -69,7 +70,7 @@ data class AdCassandraDTO(
         const val COLUMN_TITLE = "title"
         const val COLUMN_DESCRIPTION = "description"
         const val COLUMN_ADDRESS = "address"
-        const val COLUMN_OWNER_ID = "owner_id_my"
+        const val COLUMN_OWNER_ID = "owner_id"
         const val COLUMN_VISIBILITY = "visibility"
         const val COLUMN_DEAL_SIDE = "deal_side"
         const val COLUMN_RENT_TYPE = "rent_type"
@@ -93,17 +94,15 @@ data class AdCassandraDTO(
                 .withColumn(COLUMN_REALTY, DataTypes.TEXT)
                 .withColumn(COLUMN_LOCK, DataTypes.TEXT)
                 .build()
-        /*
-        fun titleIndex(keyspace: String, tableName: String, locale: String = "en") =
+
+        fun descrIndex(keyspace: String, tableName: String, locale: String = "ru") =
             SchemaBuilder
                 .createIndex()
                 .ifNotExists()
                 .usingSASI()
                 .onTable(keyspace, tableName)
-                .andColumn(COLUMN_TITLE)
+                .andColumn(COLUMN_DESCRIPTION)
                 .withSASIOptions(mapOf("mode" to "CONTAINS", "tokenization_locale" to locale))
                 .build()
-
-         */
     }
 }

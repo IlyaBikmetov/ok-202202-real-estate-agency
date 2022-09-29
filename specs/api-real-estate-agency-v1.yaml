@@ -167,7 +167,7 @@ components:
       properties:
         responseType:
           type: string
-          description: Поле-дескриминатор для вычисления типа запроса
+          description: Поле-дискриминатор для вычисления типа запроса
           example: create
         requestId:
           type: string
@@ -178,7 +178,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-
       discriminator:
         propertyName: responseType
         mapping:
@@ -187,6 +186,17 @@ components:
           update: '#/components/schemas/AdUpdateResponse'
           delete: '#/components/schemas/AdDeleteResponse'
           search: '#/components/schemas/AdSearchResponse'
+
+    IRealty:
+      type: object
+      properties:
+        realtyproperty:
+          $ref: '#/components/schemas/RealtyProperty'
+      discriminator:
+        propertyName: realtyproperty
+        mapping:
+          flat: '#/components/schemas/AdRealtyFlat'
+          room: '#/components/schemas/AdRealtyRoom'
 
     DealSide:
       type: string
@@ -214,10 +224,21 @@ components:
         - office
         - storage
 
+    AdRealtyStoveType:
+      type: string
+      description: 'Газовая/электрическая плита'
+      enum:
+        - none
+        - gas
+        - electric
+
     BaseAdUpdatable:
       type: object
       description: Объект описывает свойства, одинаковые для create и update
       properties:
+        ownerId:
+          type: string
+          description: Идентификатор пользователя
         title:
           type: string
           description: Заголовок объявления
@@ -231,10 +252,12 @@ components:
           $ref: '#/components/schemas/DealSide'
         renttype:
           $ref: '#/components/schemas/RentType'
-        realtyproperty:
-          $ref: '#/components/schemas/RealtyProperty'
+        realty:
+          $ref: '#/components/schemas/IRealty'
         visibility:
           $ref: '#/components/schemas/AdVisibility'
+        lock:
+          type: string
 
     AdVisibility:
       type: string
@@ -252,6 +275,41 @@ components:
           properties:
             id:
               type: string
+            lock:
+              type: string
+
+    AdRealtyFlat:
+      allOf:
+        - $ref: '#/components/schemas/IRealty'
+        - type: object
+          description: 'Объявление, описывающее квартиру'
+          properties:
+            square:
+              type: number
+              format: float
+            floor:
+              type: integer
+            cntRooms:
+              type: integer
+            stoveType:
+              $ref: '#/components/schemas/AdRealtyStoveType'
+            balcony:
+              type: boolean
+
+    AdRealtyRoom:
+      allOf:
+        - $ref: '#/components/schemas/IRealty'
+        - type: object
+          description: 'Объявление, описывающее комнату'
+          properties:
+            square:
+              type: number
+              format: float
+            floor:
+              type: integer
+            balcony:
+              type: boolean
+
 
     AdCreateRequest:
       allOf:

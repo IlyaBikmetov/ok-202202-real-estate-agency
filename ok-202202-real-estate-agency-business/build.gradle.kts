@@ -21,6 +21,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation(project(":ok-202202-real-estate-agency-common"))
+                implementation(project(":ok-202202-real-estate-agency-cassandra"))
                 implementation("com.github.crowdproj.kotlin-cor:kotlin-cor:$kotlinCorVersion")
             }
         }

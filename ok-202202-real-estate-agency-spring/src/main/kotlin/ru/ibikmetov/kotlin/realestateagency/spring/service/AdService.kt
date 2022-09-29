@@ -3,10 +3,11 @@ package ru.ibikmetov.kotlin.realestateagency.spring.service
 import org.springframework.stereotype.Service
 import ru.ibikmetov.kotlin.realestateagency.business.ReAgAdProcessor
 import ru.ibikmetov.kotlin.realestateagency.common.ReAgContext
+import ru.ibikmetov.kotlin.realestateagency.common.models.ReAgSettings
 
 @Service
-class AdService {
-    private val processor = ReAgAdProcessor()
+class AdService(settings: ReAgSettings = ReAgSettings()) {
+    private val processor = ReAgAdProcessor(settings)
 
     suspend fun exec(context: ReAgContext) = processor.exec(context)
 

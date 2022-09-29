@@ -18,7 +18,7 @@ class DeserializationTest {
         assertEquals("""Address""", createRequest.ad?.address)
         assertEquals(DealSide.DEMAND, createRequest.ad?.dealside)
         assertEquals(RentType.DAILY, createRequest.ad?.renttype)
-        assertEquals(RealtyProperty.STORAGE, createRequest.ad?.realtyproperty)
+        assertEquals(RealtyProperty.STORAGE, createRequest.ad?.realty?.realtyproperty)
         assertEquals(AdVisibility.PUBLIC, createRequest.ad?.visibility)
     }
 }

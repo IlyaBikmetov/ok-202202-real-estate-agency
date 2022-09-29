@@ -1,5 +1,6 @@
 package ru.ibikmetov.kotlin.realestateagency.async.kafka
 
+import kotlinx.coroutines.runBlocking
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.MockConsumer
 import org.apache.kafka.clients.consumer.OffsetResetStrategy
@@ -23,7 +24,7 @@ import kotlin.test.assertEquals
 
 class KafkaTest {
     @Test
-    fun runKafka() {
+    fun runKafka() = runBlocking {
         val consumer = MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)
         val producer = MockProducer<String, String>(true, StringSerializer(), StringSerializer())
         val config = AppKafkaConfig()

@@ -14,7 +14,6 @@ class SerializationTest {
                 address = "Address",
                 dealside = DealSide.DEMAND,
                 renttype = RentType.DAILY,
-                realtyproperty = RealtyProperty.STORAGE,
                 visibility = AdVisibility.PUBLIC
             )
         )
