@@ -42,6 +42,8 @@ dependencies {
     implementation(project(":ok-202202-real-estate-agency-mappers"))
     implementation(project(":ok-202202-real-estate-agency-business"))
     implementation(project(":ok-202202-real-estate-agency-cassandra"))
+    implementation(project(":ok-202202-real-estate-agency-logging"))
+    implementation(project(":ok-202202-real-estate-agency-logs"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$koTestVersion")

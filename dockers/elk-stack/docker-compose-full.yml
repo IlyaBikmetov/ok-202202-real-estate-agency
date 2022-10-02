@@ -1,30 +1,36 @@
 version: "3.3"
+
 services:
-  spring-app:
-    image: ru.ibikmetov.kotlin.realestateagency/ok-202202-real-estate-agency-spring:1.0
-    container_name: real-estate-agency-restapi
+  elasticsearch:
+    build:
+      context: ../images/elasticsearch
+    volumes:
+      - ./volumes/esdata:/usr/share/elasticsearch/data
     ports:
-      - "8082:8082"
-    depends_on:
-      - cassandra
-      - zookeeper
-      - kafka
+      - "9200:9200"
+      - "9300:9300"
+
+  kibana:
+    build:
+      context: ../images/kibana
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
 
   zookeeper:
-    image: wurstmeister/zookeeper:latest
-    container_name: zookeeper
+    image: wurstmeister/zookeeper:3.4.6
     expose:
       - "2181"
 
   kafka:
-    image: wurstmeister/kafka:latest
-    container_name: kafka
+    image: wurstmeister/kafka:2.12-2.5.0
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"
+      - "9094:9094"
     volumes:
-      - ./kfdata:/kafka
+      - ./volumes/kfdata:/kafka
     links:
       - zookeeper
     environment:
@@ -39,45 +45,9 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
 
-  cassandra:
-    image: cassandra:4.0
-    container_name: cassandra
-    ports:
-      - "9042:9042"
-    volumes:
-      - ~/apps/cassandra:/var/lib/cassandra
-    environment:
-      - CASSANDRA_CLUSTER_NAME=citizix
-
-  kafka-app:
-    image: ok-202202-real-estate-agency-async:1.0
-    container_name: real-estate-agency-async
-    depends_on:
-      - kafka
-
-  elasticsearch:
-    container_name: elasticsearch
-    build:
-      context: images/elasticsearch
-    volumes:
-      - ./volumes/esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-
-  kibana:
-    container_name: kibana
-    build:
-      context: images/kibana
-    ports:
-      - "5601:5601"
-    links:
-      - elasticsearch
-
   logstash:
-    container_name: logstash
     build:
-      context: images/logstash
+      context: ../images/logstash
     ports:
       - "5044:5044"
       - "1111:1111"
@@ -92,7 +62,6 @@ services:
   #      - zookeeper
 
   kafdrop:
-    container_name: kafdrop
     image: obsidiandynamics/kafdrop:3.27.0
     ports:
       - "9000:9000"

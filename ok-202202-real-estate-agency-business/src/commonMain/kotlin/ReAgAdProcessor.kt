@@ -36,9 +36,7 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 chain {
                     title = "Валидация запроса"
                     worker("Копируем поля в adValidating") {
-                        println("ReAgAdProcessor adRequest: $adRequest")
                         adValidating = adRequest.deepCopy()
-                        println("ReAgAdProcessor adValidating: $adValidating")
                     }
                     worker("Очистка заголовка") { adValidating.title = adValidating.title.trim() }
                     worker("Очистка описания") { adValidating.description = adValidating.description.trim() }
@@ -66,17 +64,6 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
-
-                /*
-                worker {
-                    title = "Подготовка ответа"
-                    on { state == ReAgState.RUNNING }
-                    handle {
-                        state = ReAgState.FINISHING
-                        adResponse = adRepoDone
-                    }
-                }
-                 */
             }
             operation("Получить объявление", ReAgCommand.READ) {
                 stubs("Обработка стабов") {
@@ -110,17 +97,6 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
-                /*
-                worker {
-                    title = "Подготовка ответа"
-                    on { state == ReAgState.RUNNING }
-                    handle {
-                        state = ReAgState.FINISHING
-                        adResponse = adRepoDone
-                    }
-                }
-
-                 */
             }
             operation("Изменить объявление", ReAgCommand.UPDATE) {
                 stubs("Обработка стабов") {
@@ -162,17 +138,6 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
-                /*
-                worker {
-                    title = "Подготовка ответа"
-                    on { state == ReAgState.RUNNING }
-                    handle {
-                        state = ReAgState.FINISHING
-                        adResponse = adRepoDone
-                    }
-                }
-
-                 */
             }
             operation("Удалить объявление", ReAgCommand.DELETE) {
                 stubs("Обработка стабов") {
@@ -207,17 +172,6 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
-                /*
-                worker {
-                    title = "Подготовка ответа"
-                    on { state == ReAgState.RUNNING }
-                    handle {
-                        state = ReAgState.FINISHING
-                        adResponse = adRepoDone
-                    }
-                }
-
-                 */
             }
             operation("Поиск объявлений", ReAgCommand.SEARCH) {
                 stubs("Обработка стабов") {
@@ -246,16 +200,6 @@ class ReAgAdProcessor(private val settings: ReAgSettings = ReAgSettings(InitCass
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
-                /*
-                worker {
-                    title = "Подготовка ответа"
-                    on { state == ReAgState.RUNNING }
-                    handle {
-                        state = ReAgState.FINISHING
-                    }
-                }
-
-                 */
             }
         }.build()
     }
